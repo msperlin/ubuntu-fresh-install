@@ -1,2 +1,0 @@
-sudo apt install texlive-base texlive-science texlive-latex-recommended texlive-latex-base texlive-latex-extra
-
