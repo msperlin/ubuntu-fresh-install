@@ -1,78 +1,32 @@
-# UBUNTU-Fresh-Install
+# Ubuntu Fresh Install Setup
 
-This bash script was written for Linux Mint and Ubuntu and will install all required software in a fresh computer. The main innovation is that the script **always** install the latest available version using apt, snap, or customized bash scripts. For R users, it can also install RStudio preferences and R packages. 
+A Bash utility designed to automate the post-installation setup for Ubuntu and Debian systems. This script provides an interactive, menu-driven interface using `whiptail` to easily select, configure, and install various software components.
 
-If you plan to use this bash file, make sure to check all .txt files in all folders. You can, for example, add or remove apt/snap software or R packages to install. 
+## Features
 
-# How to use it
+The interactive menu allows you to selectively execute the following tasks:
 
-1) Download this repository as a [zip file](https://github.com/msperlin/UBUNTU-Fresh-Install/archive/refs/heads/main.zip)
+- **System Update:** Update and upgrade the system via `apt`.
+- **APT Packages:** Install basic software defined in `apt-to-install.txt`.
+- **TeX Live:** Install TeX Live packages for document production.
+- **R Packages:** Install R and related packages.
+- **Python Packages:** Install Python and related environments/packages.
+- **Visual Studio Code:** Install the VS Code editor.
+- **Git Configuration:** Set up Git username and email.
+- **Docker:** Install and configure Docker.
+- **Insync:** Install the Insync Google Drive client.
+- **System Cleanup:** Run `apt autoremove` to clean up unused packages.
 
-2) Unpack the zip file and check all .txt files in all subfolders. Remove or add software/R packages as needed.
+## Prerequisites
 
-3) Within a terminal, execute the main script:
+- **OS:** Debian or Ubuntu (tested on kubuntu 24.04).
+- **Privileges:** You must have `sudo` privileges to run installations and system modifications.
+- **Dependencies:** The script requires `whiptail`, which it will automatically attempt to install if it is not found on your system.
 
-```
-./01-UBUNTU_Install-Software.sh
-```
+## Using from the cli
 
-Type your sudo password and wait..
-
-3) [optional] Install R  and RStudio
-
-```
-./02-Install-R-and-RStudio.sh
-```
-
-4) [optional] Install R packages:
-
-```
-./03-Install-R-Pkgs.sh
-```
-
-
-# Installed Software
-
-This bash script includes the following software:
-
-## Using apt
-- libreoffice ([lastest](https://www.libreoffice.org/))
-- textudio ([latest](https://www.texstudio.org/))
-- obstudio ([latest](https://obsproject.com/wiki/install-instructions#linux))
-- many others (see file `apt-to-install/list_to_install.txt)`
-
-## Using custom bash scripts
-- R ([latest](https://www.r-project.org/))
-- R Packages
-  - See file `R-pkgs/pkgs_to_install.txt`
-- RStudio ([latest](https://rstudio.com/)
-  - RStudio configuration -- color scheme, size font, .. (see file `Rstudio-Config/my-rstudio-prefs.json`). You can get your own Rstudio preference file localy at `~/.config/rstudio/rstudio-pref.json`.
-- Google Chrome ([latest](https://www.google.com/chrome/))
-
-## Using snap
-
-- Microsoft code ([latest by snap](https://snapcraft.io/code))
-
-
-# Generating R package list
-
-You can generate your own list of R packages based on your existing code. For that, use the R code below. Do notice you'll need to change the base folder in `renv::dependencies`.
+Simply run the following bash code:
 
 ```
-library(dplyr)
-
-my_r_dir <- 'YOUR-FOLDER-HERE'
-df <- renv::dependencies(my_r_dir)
-
-n_to_colect <- 50 # number of pkgs to collect (most to least frequent)
-
-tbl_pkgs <- df %>%
-  group_by(Package) %>%
-  count() %>%
-  arrange(-n) %>%
-  #view() %>%
-  ungroup() %>%
-  slice(1:n_to_colect)
-
-tbl_pkgs
+curl -sL https://raw.githubusercontent.com/msperlin/ubuntu-fresh-install/main/installer.sh | bash
 ```
