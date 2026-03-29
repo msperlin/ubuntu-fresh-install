@@ -1,4 +1,6 @@
 #!/bin/bash
+
+# install pyenv
 curl -fsSL https://pyenv.run | bash
 
 # set pyenv into bash shell
@@ -12,3 +14,6 @@ echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.bashrc
 # install uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
 echo 'eval "$(uv generate-shell-completion bash)"' >> ~/.bashrc
+
+# install other python utils
+sudo apt install -y python3-venv python3-pip python3-pytest
