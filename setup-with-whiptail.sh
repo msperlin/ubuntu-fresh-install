@@ -52,6 +52,7 @@ CHOICES=$(whiptail --title "Debian GNOME Setup" --checklist \
 "Select components to install (Space to select, Enter to confirm):" 22 78 14 \
 "UPDATE" "Update and Upgrade System" ON \
 "APT" "Install apt software in $apt_file" OFF \
+"UTILS" "Install utils (gh,topgrade, ..)" OFF \
 "TEXLIVE" "Install texlive packages" OFF \
 "R_PKG" "Install R-related packages" OFF \
 "PYTHON" "Install Python related packages" OFF \
@@ -68,6 +69,8 @@ if [ $? -eq 0 ]; then
             '"UPDATE"') update_system ;;
             '"NONFREE"') sudo ./scripts/set-non-free-repositories.sh ;;
             '"APT"') install_apt_software ;;
+            '"UTILS"') ./scripts/install-utils.sh ;;
+            '"STEAM"') sudo ./scripts/install-steam.sh ;;
             '"TEXLIVE"') ./scripts/install-texlive.sh ;;
             '"R_PKG"') ./scripts/install-R-related.sh ;;
             '"PYTHON"') ./scripts/install-python-related.sh ;;
