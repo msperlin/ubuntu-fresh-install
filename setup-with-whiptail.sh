@@ -32,7 +32,6 @@ install_apt_software() {
     do
 	    sudo apt install "$apt_software" -y
     done
-    sudo apt install -y $APT_PACKAGES
 }
 
 cleanup() {

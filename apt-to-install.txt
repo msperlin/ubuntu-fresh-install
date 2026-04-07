@@ -1,0 +1,17 @@
+pandoc-*
+libreoffice
+ffmpeg
+keepass2
+git
+hunspell-pt-br
+htop
+qpdf
+cmake
+make
+calibre
+libzstd-dev
+libharfbuzz-dev
+libfribidi-dev
+curl
+git
+sqlitebrowser
