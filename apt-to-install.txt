@@ -12,3 +12,6 @@ libharfbuzz-dev
 libfribidi-dev
 curl
 sqlitebrowser
+yakuake
+okular
+libreoffice
