@@ -1,13 +1,15 @@
 #!/bin/bash
+set -euo pipefail
+
 ubuntu_codename=$(lsb_release -cs)
 
 gpg --keyserver keyserver.ubuntu.com \
     --recv-key '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7'
     
 gpg --armor --export '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7' | \
-    sudo tee /etc/apt/trusted.gpg.d/cran_debian_key.asc
+    sudo tee /etc/apt/trusted.gpg.d/cran_debian_key.asc > /dev/null
 
-echo "deb http://cloud.r-project.org/bin/linux/debian ${ubuntu_codename}-cran40/" | sudo tee -a /etc/apt/sources.list
+echo "deb http://cloud.r-project.org/bin/linux/debian ${ubuntu_codename}-cran40/" | sudo tee /etc/apt/sources.list.d/r-project.list > /dev/null
 
 sudo apt update
 sudo apt install r-base r-base-dev -y
@@ -20,8 +22,7 @@ sudo apt install -y gdebi-core curl wget
 
 # 2. Define the "Latest" Redirect URL
 # This URL always points to the latest stable build for Ubuntu/Debian
-# "jammy" is the codename used for the latest Debian 11/12 compatible builds
-LATEST_URL="https://rstudio.org/download/latest/stable/desktop/jammy/rstudio-latest-amd64.deb"
+LATEST_URL="https://rstudio.org/download/latest/stable/desktop/noble/rstudio-latest-amd64.deb"
 
 # 3. Scrape the Version Number
 # We use 'curl -I' (head request) to see where the link redirects to

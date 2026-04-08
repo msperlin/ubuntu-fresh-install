@@ -1,4 +1,7 @@
-sudo apt remove $(dpkg --get-selections docker.io docker-compose docker-doc podman-docker containerd runc | cut -f1)
+#!/bin/bash
+set -euo pipefail
+
+for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get remove -y $pkg || true; done
 
 # Add Docker's official GPG key:
 sudo apt update
@@ -22,5 +25,5 @@ sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin dock
 
 sudo systemctl start docker
 
-sudo groupadd docker
+sudo groupadd docker || true
 sudo usermod -aG docker $USER

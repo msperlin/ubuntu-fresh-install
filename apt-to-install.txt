@@ -13,5 +13,4 @@ libzstd-dev
 libharfbuzz-dev
 libfribidi-dev
 curl
-git
 sqlitebrowser

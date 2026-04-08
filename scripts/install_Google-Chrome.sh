@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 echo "  - Installing Google Chrome"
 
@@ -7,7 +8,7 @@ URL_GOOGLE_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_curre
 DIR_DL="/tmp/chrome-temp"
 
 ## Download and install external software
-mkdir "$DIR_DL"
+mkdir -p "$DIR_DL"
 
 wget -c "$URL_GOOGLE_CHROME"  -P "$DIR_DL" > /dev/null 2>&1
 

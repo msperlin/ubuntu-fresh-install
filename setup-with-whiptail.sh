@@ -1,23 +1,8 @@
-# --- Functions ---
-# initial steps
-# make all scripts executable
-chmod +x scripts/*.sh
+#!/bin/bash
+set -euo pipefail
+
 # --- Main Execution ---
 apt_file="apt-to-install.txt"
-
-# --- Functions ---
-ask_user() {
-    # Usage: ask_user "Question?" "Command to run"
-    echo "-------------------------------------------------"
-    read -p "$1 (y/N): " choice
-    if [[ "$choice" =~ ^[Yy]$ ]]; then
-        echo ">> Executing..."
-        eval "$2"
-    else
-        echo ">> Skipped."
-    fi
-    echo ""
-}
 
 # initial steps
 # make all scripts executable
@@ -28,10 +13,7 @@ update_system() {
 }
 
 install_apt_software() {
-    for apt_software in $(cat "$apt_file")
-    do
-	    sudo apt install "$apt_software" -y
-    done
+    xargs -a "$apt_file" sudo apt install -y
 }
 
 cleanup() {
@@ -52,6 +34,8 @@ CHOICES=$(whiptail --title "Debian GNOME Setup" --checklist \
 "UPDATE" "Update and Upgrade System" ON \
 "APT" "Install apt software in $apt_file" OFF \
 "UTILS" "Install utils (gh,topgrade, ..)" OFF \
+"STEAM" "Install Steam" OFF \
+"CHROME" "Install Google Chrome" OFF \
 "TEXLIVE" "Install texlive packages" OFF \
 "R_PKG" "Install R-related packages" OFF \
 "PYTHON" "Install Python related packages" OFF \
@@ -66,23 +50,22 @@ if [ $? -eq 0 ]; then
     for CHOICE in $CHOICES; do
         case "$CHOICE" in
             '"UPDATE"') update_system ;;
-            '"NONFREE"') sudo ./scripts/set-non-free-repositories.sh ;;
             '"APT"') install_apt_software ;;
             '"UTILS"') ./scripts/install-utils.sh ;;
-            '"STEAM"') sudo ./scripts/install-steam.sh ;;
+            '"STEAM"') ./scripts/install-steam.sh ;;
+            '"CHROME"') ./scripts/install_Google-Chrome.sh ;;
             '"TEXLIVE"') ./scripts/install-texlive.sh ;;
             '"R_PKG"') ./scripts/install-R-related.sh ;;
             '"PYTHON"') ./scripts/install-python-related.sh ;;
-            '"VSCODE"') sudo ./scripts/install-vscode.sh ;;
+            '"VSCODE"') ./scripts/install-vscode.sh ;;
             '"GIT"') ./scripts/configure-git.sh ;;
-            '"DOCKER"') sudo ./scripts/install-config-docker.sh ;;
-            '"NVIDIA"') sudo ./scripts/install-nvidia-drivers.sh ;;
-            '"INSYNC"') sudo ./scripts/install-insync.sh ;;
+            '"DOCKER"') ./scripts/install-config-docker.sh ;;
+            '"INSYNC"') ./scripts/install-insync.sh ;;
             '"CLEANUP"') cleanup ;;
         esac
     done
     echo "=== Setup Complete! ==="
-    echo "Please restart your session to apply GNOME changes."
+    echo "Please restart your session to apply major changes."
 else
     echo "Setup cancelled."
 fi
