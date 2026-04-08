@@ -10,6 +10,16 @@ chmod +x scripts/*.sh
 
 update_system() {
     sudo apt update && sudo apt upgrade -y
+    if command -v deb-get &> /dev/null; then
+        sudo deb-get update
+    fi
+}
+
+install_deb_get() {
+    if ! command -v deb-get &> /dev/null; then
+        echo "deb-get not found. Installing..."
+        curl -sL https://raw.githubusercontent.com/wimpysworld/deb-get/main/deb-get | sudo bash -s install deb-get
+    fi
 }
 
 install_apt_software() {
@@ -27,9 +37,12 @@ if ! command -v whiptail &> /dev/null; then
     sudo apt install whiptail -y
 fi
 
+# Ensure deb-get is installed
+install_deb_get
+
 echo "=== UBUNTU Setup Script ==="
 
-CHOICES=$(whiptail --title "Debian GNOME Setup" --checklist \
+CHOICES=$(whiptail --title "Ubuntu Setup" --checklist \
 "Select components to install (Space to select, Enter to confirm):" 22 78 14 \
 "UPDATE" "Update and Upgrade System" ON \
 "APT" "Install apt software in $apt_file" OFF \

@@ -1,17 +1,19 @@
 #!/bin/bash
 set -euo pipefail
 
-ubuntu_codename=$(lsb_release -cs)
+# install R itself
 
-gpg --keyserver keyserver.ubuntu.com \
-    --recv-key '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7'
-    
-gpg --armor --export '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7' | \
-    sudo tee /etc/apt/trusted.gpg.d/cran_debian_key.asc > /dev/null
+# update indices
+sudo apt update -qq
+# install two helper packages we need
+sudo apt install --no-install-recommends software-properties-common dirmngr
+# add the signing key (by Michael Rutter) for these repos
+# To verify key, run gpg --show-keys /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc 
+# Fingerprint: E298A3A825C0D65DFD57CBB651716619E084DAB9
+wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+# add the repo from CRAN -- lsb_release adjusts to 'noble' or 'jammy' or ... as needed
+sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
 
-echo "deb http://cloud.r-project.org/bin/linux/debian ${ubuntu_codename}-cran40/" | sudo tee /etc/apt/sources.list.d/r-project.list > /dev/null
-
-sudo apt update
 sudo apt install r-base r-base-dev -y
 
 # install rstudio

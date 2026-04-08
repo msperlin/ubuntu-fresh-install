@@ -1,5 +1,3 @@
-pandoc-*
-libreoffice
 ffmpeg
 keepass2
 git
